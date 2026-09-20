@@ -1,23 +1,29 @@
-# Crosshair Container Peek — download & usage
+# Container Content Preview — crosshair preview & shulker box preview
 
-**In one sentence:** aim your crosshair at a chest, barrel, hopper (any container) and its contents are
-drawn straight onto the HUD — **without opening it**. The server edition can also show a shulker box's
-contents along the left edge of the screen when you click the box inside a container UI.
+A container content preview tool for Minecraft Bedrock: **see what is inside a container without
+opening it**. Two preview modes cover different situations:
 
-> **This repository ships only the finished files** (behavior + resource packs, the server plugin and
-> documentation). No source code.
+| Feature | How it is triggered | Where it is drawn | Addon edition | Server plugin edition |
+|---|---|---|---|---|
+| **Crosshair preview** | Aim the crosshair at a container block or container entity | Centre of the HUD, laid out by slot | ✔ | ✔ |
+| **Shulker box preview** | **Click a shulker box item** inside an open container / inventory UI | **Left edge** of the screen | — | ✔ |
+| Shulker box badge | Boxes matching the tier test get a small picture of their contents in the icon's bottom-right corner | Bottom-right of the icon | — | ✔ |
+| Preview scaling (three steps) | `/peek:scale` | Crosshair preview only | — | ✔ |
+
+> **This repository is a release-only repository** (behavior pack, resource pack, server plugin and
+> documentation). It contains **no source code**.
 >
 > License: **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)** —
 > Attribution-NonCommercial-ShareAlike.
-> · **You may** use it, modify it, and redistribute it for free (your own server, playing with friends,
->   and public **non-commercial** servers are all fine).
+> · **You may** use it, modify it, and redistribute it free of charge (your own server, playing with
+>   friends, and public **non-commercial** servers are all fine).
 > · **You may not** make money with it (selling it, paid modpacks, monetised platforms, or using it as a
->   selling point for a paid server/service).
-> · **You must** keep the attribution; if you publish a modified version it has to stay under the same
->   license and say that it is based on this project.
+>   selling point for a paid server or service).
+> · **You must** keep the attribution and copyright notices; a modified version has to stay under the same
+>   license and must state that it is based on this project.
 >
-> The binding text is `LICENSE` (official CC legal code, English);
-> `LICENSE.txt` is the Chinese explanation, including where the "no commercial use" line is drawn.
+> The binding text is `LICENSE` (official CC legal code, English); `LICENSE.txt` is the Chinese
+> explanation, including where the "no commercial use" line is drawn.
 
 Versions: behavior pack **2.994.22** (1.21.x) / **2.994.21** (1.26.x) · resource pack **2.994.18** ·
 server plugin **2.994.19** (built 2026-09-20)
@@ -67,8 +73,13 @@ The preview is laid out **by slot**: an item is drawn in the cell matching its s
 blank — 3 rows for a small chest, 6 for a double chest, 3 for a hopper. Optional extras: item counts,
 the container's name, a slot-position grid, item names.
 
-> ⚠️ **The addon edition is the crosshair preview only.** The shulker-box peek (left edge of the screen),
-> the shulker-box badge and the three-step scaling exist **only in the server plugin edition** (section 5).
+**Shulker box preview** (server plugin edition, section 5): a server cannot observe hovering (there is
+neither a packet nor an event for it), so **clicking a shulker box item** inside a container / inventory
+UI is the only per-slot signal it receives. The box's contents are then drawn with the same slot layout
+along the **left edge** of the screen (the centre is covered by the container panel and its dimming
+overlay, the edge is not). It is withdrawn automatically — and the crosshair preview takes over again —
+when the player turns the view, closes the UI, or aims at a container once more; it also expires after
+5 seconds. Its position is configured separately with `/peek:boxpos` and `/peek:boxhspace`.
 
 ---
 
@@ -93,7 +104,8 @@ Type `/peek:usage` in game for the full list. The usual ones:
 
 Leaving the value out toggles a switch. Values are stored in scoreboards, so they survive a restart.
 (`/peek:scale`, `/peek:box`, `/peek:boxbadge`, `/peek:badgelevel`, `/peek:log` belong to the **server**
-edition and do not exist in the addon.)
+edition and do not exist in the addon. The addon edition provides the **crosshair preview only** — the
+shulker box preview, the shulker box badge and three-step scaling all require the server plugin.)
 
 ---
 
@@ -116,8 +128,8 @@ Extra features over the addon edition:
 
 | Feature | Notes |
 |---|---|
-| Shulker box peek | Click a shulker box inside a container/inventory UI → contents along the left edge (a server cannot see hovering; clicking is the only signal it gets) |
-| Shulker box badge | Boxes worth noticing (four tiers, `/peek:badgelevel`) get a small picture of their contents in the bottom-right corner of the icon |
+| **Shulker box preview** | **Click a shulker box item** inside a container / inventory UI → its contents are drawn along the **left edge**; withdrawn automatically when the view turns, the UI closes, or the crosshair aims at a container again (5 s maximum). Position: `/peek:boxpos`, `/peek:boxhspace` |
+| Shulker box badge | Boxes matching the tier test (four tiers, `/peek:badgelevel`) get a small picture of their contents in the bottom-right corner of the icon |
 | Three-step scale | `/peek:scale full\|three4\|half` (crosshair preview only) |
 | Position knobs | `/peek:top` `/peek:hspace` `/peek:boxpos` `/peek:boxhspace` |
 | On-screen self-test | `/peek:hudtest` — draws three lines of plain text on the player's screen, the fastest way to tell "why are my icons boxes/question marks" (run it again to stop) |
